@@ -1,16 +1,15 @@
 
 uint8_t cat9555_Addr = 0x27;
 const uint8_t all_IOs_Output = 0x00;
-
+const uint8_t all_IOs_Input = 0xFF;
 int Relay_no[16] = {
   0, 1, 2, 3, 4, 5, 6, 7,
   15, 14, 13, 12, 11, 10, 9, 8
 };
 
-#define pause 750
-
+#define pause 500 /* ms delay */
 /**************************/
-#include "cam_cat9555.h"
+#include <cat9555.h>
 #include <Wire.h>
 /**************************/
 #define Relay_on 0
@@ -33,20 +32,20 @@ void setup() {
 String bitMaske() {
   String text = "b";
   for (int p = 15; p >= 0; p--) {
-    text += String(!i2c_exp.readBit(p));
+    text += String(!i2c_exp.getBit(p));
   }
   return text;
 }
 
 void loop() {
   for (int i = 0; i < 16; i++) {
-    i2c_exp.set_bit(Relay_no[i], Relay_on); // Schaltet Relay No. (i) ein
+    i2c_exp.setBit(Relay_no[i], Relay_on); // Schaltet Relay No. (i) ein
     Serial.println(bitMaske()); // gib die 16 bit als String aus ("b0011001100110011").
     delay(pause);
   }
-  delay(pause * 10);
+  delay(pause * 4);
   for (int i = 0; i < 16; i++) {
-    i2c_exp.set_bit(Relay_no[i], Relay_off); // Schaltet Relay No. (i) aus
+    i2c_exp.setBit(Relay_no[i], Relay_off); // Schaltet Relay No. (i) aus
     Serial.println(bitMaske()); // gib die 16 bit als String aus ("b0011001100110011").
     delay(pause);
   }
