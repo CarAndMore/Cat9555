@@ -28,11 +28,22 @@ void setup() {
   i2c_exp.setPort_1(0xff); // alle 8 Relays auf Port 1 aus
 }
 
-/* gib die 16 bit als String aus ("b0011001100110011"). */
-String bitMaske() {
+/**
+ * @brief gib die 16 bit als String aus ("b0011001100110011").
+ * 
+ * @param invertiert gibt an ob der wert invertiert werden soll. default ( true )
+ *
+ * @return String: "b0011001100110000"
+ 
+ */
+String bitMaske(bool invertiert = true) {
   String text = "b";
   for (int p = 15; p >= 0; p--) {
-    text += String(!i2c_exp.getBit(p));
+    if (invertiert) {
+      text += String(!i2c_exp.getBit(p));
+    } else {
+      text += String(i2c_exp.getBit(p));
+    }
   }
   return text;
 }
