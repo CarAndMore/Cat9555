@@ -143,8 +143,9 @@ bool CAT9555::getBit(uint8_t pinPos) {
     return (getPort_0() & (1 << pinPos)) != 0;
   } else if ((pinPos >= 8) & pinPos < 16) {
     return (getPort_1() & (1 << pinPos - 8)) != 0;
+  } else {
+	  return 0;
   }
 }
-
-#endif
 /****************************************************************/
+#endif
