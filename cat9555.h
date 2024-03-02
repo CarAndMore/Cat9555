@@ -74,7 +74,7 @@ void CAT9555::begin(uint8_t i2c_addr, uint8_t p0, uint8_t p1) {
  * @param p1 Konfiguriert Byteport 1 (0x00 für alle Ausgänge / 0xff für alle Eingänge)
  */
 void CAT9555::begin(TwoWire newWire, uint8_t i2c_addr, uint8_t p0, uint8_t p1) {
-  newWire = newWire;
+  myWire = newWire;
   i2C_ADDR = i2c_addr;
   Write_reg(CFG_PORT0, p0);
   Write_reg(CFG_PORT1, p1);
