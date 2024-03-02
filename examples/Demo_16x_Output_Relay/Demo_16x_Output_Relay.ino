@@ -7,7 +7,7 @@ int Relay_no[16] = {
   15, 14, 13, 12, 11, 10, 9, 8
 };
 
-#define pause 500 /* ms delay */
+#define WarteZeit 500 /* ms delay */
 /**************************/
 #include <cat9555.h>
 #include <Wire.h>
@@ -17,16 +17,6 @@ int Relay_no[16] = {
 
 CAT9555 i2c_exp;
 /**************************/
-void setup() {
-  Serial.begin(115200);
-  Serial.println("0123456789abc");
-  Serial.println("0123456789abc");
-
-  Wire.begin();
-  i2c_exp.begin(Wire, cat9555_Addr, all_IOs_Output, all_IOs_Output);
-  i2c_exp.setPort_0(0xff); // alle 8 Relays auf Port 0 aus
-  i2c_exp.setPort_1(0xff); // alle 8 Relays auf Port 1 aus
-}
 
 /**
  * @brief gib die 16 bit als String aus ("b0011001100110011").
@@ -47,18 +37,30 @@ String bitMaske(bool invertiert = true) {
   }
   return text;
 }
+/**************************/
+void setup() {
+  Serial.begin(115200);
+  Serial.println("0123456789abc");
+  Serial.println("0123456789abc");
 
+  Wire.begin();
+  i2c_exp.begin(Wire, cat9555_Addr, all_IOs_Output, all_IOs_Output);
+  i2c_exp.setPort_0(0xff); // alle 8 Relays auf Port 0 aus
+  i2c_exp.setPort_1(0xff); // alle 8 Relays auf Port 1 aus
+}
 void loop() {
   for (int i = 0; i < 16; i++) {
     i2c_exp.setBit(Relay_no[i], Relay_on); // Schaltet Relay No. (i) ein
     Serial.println(bitMaske()); // gib die 16 bit als String aus ("b0011001100110011").
-    delay(pause);
+    delay(WarteZeit);
   }
-  delay(pause * 4);
+  delay(WarteZeit * 4);
   for (int i = 0; i < 16; i++) {
     i2c_exp.setBit(Relay_no[i], Relay_off); // Schaltet Relay No. (i) aus
     Serial.println(bitMaske()); // gib die 16 bit als String aus ("b0011001100110011").
-    delay(pause);
+    delay(WarteZeit);
   }
-  delay(pause * 4);
+  delay(WarteZeit * 4);
 }
+/**************************/
+/**************************/
